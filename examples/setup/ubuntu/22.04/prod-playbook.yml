@@ -19,6 +19,11 @@
     - name: Include prod vault
       include_vars: "prod.vault.yml"
 
+    - name: Override variables
+      set_fact:
+        upgrade_pkgs: yes
+        update_pkgs: yes
+
   roles:
     - { role: clivern.ragnar.common, become: yes }
     - { role: clivern.ragnar.docker, become: yes }

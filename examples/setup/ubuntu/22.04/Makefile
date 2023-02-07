@@ -4,7 +4,7 @@ GALAXY ?= ansible-galaxy
 
 help: Makefile
 	@echo
-	@echo " Choose a command run in Oxygen:"
+	@echo " Choose a command run in Ragnar:"
 	@echo
 	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
 	@echo
