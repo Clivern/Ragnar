@@ -15,7 +15,7 @@
 ---
 galaxy_info:
   author: clivern
-  description: Installs Grafana Alloy
+  description: Installs Node Exporter
   company: clivern
 
   # If the issue tracker for your role is not on github, uncomment the

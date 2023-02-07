@@ -13,17 +13,4 @@
 # limitations under the License.
 
 ---
-- hosts: servers
-
-  pre_tasks:
-    - name: Include prod vault
-      include_vars: "prod.vault.yml"
-
-    - name: Override variables
-      set_fact:
-        upgrade_pkgs: yes
-        update_pkgs: yes
-
-  roles:
-    - { role: clivern.ragnar.common, become: yes }
-    - { role: clivern.ragnar.docker, become: yes }
+node_exporter_version: 1.8.2

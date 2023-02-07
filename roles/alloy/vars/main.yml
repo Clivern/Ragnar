@@ -13,7 +13,6 @@
 # limitations under the License.
 
 ---
-node_exporter_version: 1.8.2
 alloy_version: 1.5.1
 
 remote_loki_write_url: http://X.X.X.X:3100/loki/api/v1/push

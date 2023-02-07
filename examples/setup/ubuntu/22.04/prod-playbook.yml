@@ -27,3 +27,5 @@
   roles:
     - { role: clivern.ragnar.common, become: yes }
     - { role: clivern.ragnar.docker, become: yes }
+    - { role: clivern.ragnar.node_exporter, become: yes }
+    - { role: clivern.ragnar.alloy, become: yes }

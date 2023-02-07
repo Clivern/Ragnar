@@ -1,0 +1,75 @@
+# Copyright 2024 Clivern
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Create node_exporter group
+  group:
+    name: node_exporter
+    state: present
+  tags: [ ragnar, node_exporter ]
+
+- name: Create node_exporter user
+  user:
+    name: node_exporter
+    group: node_exporter
+    shell: /bin/false
+    system: yes
+  tags: [ ragnar, node_exporter ]
+
+- name: Download and extract Node Exporter
+  unarchive:
+    src: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+    dest: /tmp/
+    remote_src: yes
+  tags: [ ragnar, node_exporter ]
+
+- name: Move Node Exporter binary to /usr/bin/
+  command: mv /tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter /usr/bin/node_exporter
+  tags: [ ragnar, node_exporter ]
+
+- name: Set permissions for Node Exporter binary
+  file:
+    path: /usr/bin/node_exporter
+    owner: node_exporter
+    group: node_exporter
+    mode: '0755'
+  tags: [ ragnar, node_exporter ]
+
+- name: Create systemd service file for Node Exporter using template
+  template:
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/node_exporter.service
+  tags: [ ragnar, node_exporter ]
+
+- name: Reload systemd to recognize the new service
+  systemd:
+    daemon_reload: yes
+  tags: [ ragnar, node_exporter ]
+
+- name: Enable Node Exporter service to start on boot
+  systemd:
+    name: node_exporter.service
+    enabled: yes
+  tags: [ ragnar, node_exporter ]
+
+- name: Start Node Exporter service
+  systemd:
+    name: node_exporter.service
+    state: started
+  tags: [ ragnar, node_exporter ]
+
+- name: Display installation completion message
+  debug:
+    msg: "Node Exporter installation done!"
+  tags: [ ragnar, node_exporter ]
