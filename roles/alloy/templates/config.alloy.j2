@@ -1,0 +1,32 @@
+// Remote Loki Server
+loki.write "remote_loki" {
+  endpoint {
+    url = env("REMOTE_LOKI_WRITE_URL")
+  }
+}
+
+// Remote Prometheus Server
+prometheus.remote_write "remote_prometheus" {
+  endpoint {
+    url = env("REMOTE_PROMETHEUS_WRITE_URL")
+
+    basic_auth {
+      username = env("REMOTE_PROMETHEUS_USERNAME")
+      password = env("REMOTE_PROMETHEUS_PASSWORD")
+    }
+  }
+}
+
+// Send Agent Logs to Loki
+logging {
+  level = "info"
+  write_to = [loki.write.remote_loki.receiver]
+}
+
+// Collect metrics from the local running Alloy instance and forward to
+// Prometheus.
+prometheus.exporter.self "{{ alloy_hostname }}" {}
+prometheus.scrape "{{ alloy_hostname }}" {
+  targets    = prometheus.exporter.self.{{ alloy_hostname }}.targets
+  forward_to = [prometheus.remote_write.remote_prometheus.receiver]
+}
