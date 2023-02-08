@@ -25,20 +25,20 @@
     url: "https://github.com/docker/compose/releases/latest/download/docker-compose-Linux-{{ ansible_architecture }}"
     dest: /usr/local/bin/docker-compose
     mode: '0755'
-  tags: [ ragnar, docker ]
+  tags: [ ragnar, docker_compose ]
 
 - name: Ensure Docker Compose is executable
   file:
     path: /usr/local/bin/docker-compose
     mode: '0755'
-  tags: [ ragnar, docker ]
+  tags: [ ragnar, docker_compose ]
 
 - name: Check Docker Compose version
   command: /usr/local/bin/docker-compose --version
   register: docker_compose_version
-  tags: [ ragnar, docker ]
+  tags: [ ragnar, docker_compose ]
 
 - name: Display Docker Compose version
   debug:
     msg: "Docker Compose version is {{ docker_compose_version.stdout }}"
-  tags: [ ragnar, docker ]
+  tags: [ ragnar, docker_compose ]
