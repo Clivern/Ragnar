@@ -123,6 +123,38 @@
   when: enable_fw
   tags: [ ragnar, common ]
 
+- name: Firewall allow MySQL
+  ufw:
+    rule: allow
+    port: '3306'
+    proto: tcp
+  when: enable_fw
+  tags: [ ragnar, common ]
+
+- name: Firewall allow Redis
+  ufw:
+    rule: allow
+    port: '6379'
+    proto: tcp
+  when: enable_fw
+  tags: [ ragnar, common ]
+
+- name: Firewall allow RabbitMQ
+  ufw:
+    rule: allow
+    port: '15672'
+    proto: tcp
+  when: enable_fw
+  tags: [ ragnar, common ]
+
+- name: Firewall allow RabbitMQ
+  ufw:
+    rule: allow
+    port: '5672'
+    proto: tcp
+  when: enable_fw
+  tags: [ ragnar, common ]
+
 - name: Set motd banner
   template:
     src: "motd.j2"

@@ -29,3 +29,4 @@
     - { role: clivern.ragnar.docker, become: yes }
     - { role: clivern.ragnar.node_exporter, become: yes }
     - { role: clivern.ragnar.alloy, become: yes }
+    - { role: clivern.ragnar.services, become: yes }

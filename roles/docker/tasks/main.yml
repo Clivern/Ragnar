@@ -20,6 +20,18 @@
     update_cache: true
   tags: [ ragnar, docker ]
 
+- name: Create or modify /etc/docker/daemon.json for metrics
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "metrics-addr": "0.0.0.0:9323",
+        "experimental": true
+      }
+  notify:
+    - restart docker
+  tags: [ ragnar, docker ]
+
 - name: Download Docker Compose
   get_url:
     url: "https://github.com/docker/compose/releases/latest/download/docker-compose-Linux-{{ ansible_architecture }}"

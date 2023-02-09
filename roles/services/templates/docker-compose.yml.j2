@@ -1,0 +1,64 @@
+# templates/docker-compose.yml.j2
+version: '3.8'
+
+services:
+  db:
+    image: 'mysql:8.4'
+    environment:
+      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+      MYSQL_DATABASE: "{{ mysql_database }}"
+      MYSQL_USER: "{{ mysql_user }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    restart: unless-stopped
+    healthcheck:
+      test: '/usr/bin/mysql --user={{ mysql_user }} --password={{ mysql_password }} --execute "SHOW DATABASES;"'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: 'redis:7-alpine'
+    command: redis-server --requirepass {{ redis_password }}
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/data'
+    restart: unless-stopped
+
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    hostname: rabbit
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    volumes:
+      - './rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config'
+    restart: unless-stopped
+
+  ivar:
+    image: "clivern/ivar:0.1.2"
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_USER: "{{ mysql_user }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"
+      MYSQL_DATABASE: "{{ mysql_database }}"
+      S3_ACCESS_KEY_ID: "{{ s3_access_key_id }}"
+      S3_SECRET_ACCESS_KEY: "{{ s3_secret_access_key }}"
+      S3_BUCKET: "{{ s3_bucket }}"
+      S3_REGION: "{{ s3_region }}"
+      S3_ENDPOINT: "{{ s3_endpoint }}"
+      SCHEDULE: "{{ schedule }}"
+      MYSQLDUMP_EXTRA_OPTIONS: "{{ mysqldump_extra_options }}"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  redis_data:

@@ -13,3 +13,27 @@
 # limitations under the License.
 
 ---
+- name: Create /opt/docker/services directory
+  file:
+    path: /opt/docker/services
+    state: directory
+    mode: '0755'
+  tags: [ ragnar, services ]
+
+- name: Create docker-compose.yml from template
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/docker/services/docker-compose.yml
+  tags: [ ragnar, services ]
+
+- name: Create rabbitmq-isolated.conf from template
+  template:
+    src: rabbitmq-isolated.conf.j2
+    dest: /opt/docker/services/rabbitmq-isolated.conf
+  tags: [ ragnar, services ]
+
+- name: Change to the services directory
+  command:
+    cmd: docker-compose up -d
+    chdir: /opt/docker/services
+  tags: [ ragnar, services ]
