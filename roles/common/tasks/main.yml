@@ -123,23 +123,7 @@
   when: enable_fw
   tags: [ ragnar, common ]
 
-- name: Firewall allow MySQL
-  ufw:
-    rule: allow
-    port: '3306'
-    proto: tcp
-  when: enable_fw
-  tags: [ ragnar, common ]
-
-- name: Firewall allow Redis
-  ufw:
-    rule: allow
-    port: '6379'
-    proto: tcp
-  when: enable_fw
-  tags: [ ragnar, common ]
-
-- name: Firewall allow RabbitMQ
+- name: Firewall allow RabbitMQ dashboard access
   ufw:
     rule: allow
     port: '15672'
@@ -147,18 +131,38 @@
   when: enable_fw
   tags: [ ragnar, common ]
 
-- name: Firewall allow RabbitMQ
+- name: Firewall allow Redis
   ufw:
     rule: allow
-    port: '5672'
+    from_ip: '{{ app_server_ip }}'
+    to_port: '6379'
     proto: tcp
   when: enable_fw
   tags: [ ragnar, common ]
 
-- name: Firewall allow Docker Metrics
+- name: Firewall allow MySQL access
   ufw:
     rule: allow
-    port: '9323'
+    from_ip: '{{ app_server_ip }}'
+    to_port: '3306'
+    proto: tcp
+  when: enable_fw
+  tags: [ ragnar, common ]
+
+- name: Firewall allow RabbitMQ clients port
+  ufw:
+    rule: allow
+    from_ip: '{{ app_server_ip }}'
+    to_port: '5672'
+    proto: tcp
+  when: enable_fw
+  tags: [ ragnar, common ]
+
+- name: Firewall allow docker metrics from local host
+  ufw:
+    rule: allow
+    from_ip: '127.0.0.1'
+    to_port: '9323'
     proto: tcp
   when: enable_fw
   tags: [ ragnar, common ]
