@@ -155,6 +155,14 @@
   when: enable_fw
   tags: [ ragnar, common ]
 
+- name: Firewall allow Docker Metrics
+  ufw:
+    rule: allow
+    port: '9323'
+    proto: tcp
+  when: enable_fw
+  tags: [ ragnar, common ]
+
 - name: Set motd banner
   template:
     src: "motd.j2"
