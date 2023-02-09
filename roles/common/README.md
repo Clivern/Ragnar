@@ -9,4 +9,6 @@ update_pkgs: no
 
 system_user: appmgmt
 system_group: appmgmt
+
+app_server_ip: 127.0.0.1
 ```
