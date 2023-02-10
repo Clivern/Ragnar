@@ -2,6 +2,11 @@
 loki.write "remote_loki" {
   endpoint {
     url = env("REMOTE_LOKI_WRITE_URL")
+
+    basic_auth {
+      username = env("REMOTE_LOKI_USERNAME")
+      password = env("REMOTE_LOKI_PASSWORD")
+    }
   }
 }
 

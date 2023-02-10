@@ -13,6 +13,8 @@ Environment="REMOTE_LOKI_WRITE_URL={{ remote_loki_write_url }}"
 Environment="REMOTE_PROMETHEUS_WRITE_URL={{ remote_prometheus_write_url }}"
 Environment="REMOTE_PROMETHEUS_USERNAME={{ remote_prometheus_username }}"
 Environment="REMOTE_PROMETHEUS_PASSWORD={{ remote_prometheus_password }}"
+Environment="REMOTE_LOKI_USERNAME={{ remote_loki_username }}"
+Environment="REMOTE_LOKI_PASSWORD={{ remote_loki_password }}"
 ExecStart=/opt/alloy/agent run --storage.path=/var/lib/alloy /opt/alloy/config.alloy
 
 [Install]
