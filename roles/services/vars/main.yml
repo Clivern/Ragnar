@@ -13,13 +13,15 @@
 # limitations under the License.
 
 ---
-# MySQL configs
-mysql_root_password: "root"
-mysql_database: "d_ropen"
-mysql_user: "u_ropen"
-mysql_password: "m06rs011e9h9ihuboi7s"
+# MySQL DB1 configs
+include_db: True
+db1_root_password: "root"
+db1_database: "d_ropen"
+db1_user: "u_ropen"
+db1_password: "m06rs011e9h9ihuboi7s"
 
 # Redis password
+include_redis: True
 redis_password: "mystery"
 
 # Ivar backup configs
@@ -32,5 +34,6 @@ schedule: "*/10 * * * *"
 mysqldump_extra_options: "--skip-ssl --no-tablespaces"
 
 # RabbitMQ Credentials
+include_rabbitmq: True
 rabbitmq_default_user: "guest"
 rabbitmq_default_pass: "1bltngynndsa5ucdq682"

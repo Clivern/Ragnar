@@ -35,3 +35,13 @@ prometheus.scrape "{{ alloy_hostname }}" {
   targets    = prometheus.exporter.unix.{{ alloy_hostname }}.targets
   forward_to = [prometheus.remote_write.remote_prometheus.receiver]
 }
+
+prometheus.scrape "docker_metrics" {
+  targets = [
+    {
+      __address__ = "127.0.0.1:9323",
+      __metrics_path__ = "/metrics"
+    }
+  ]
+  forward_to = [prometheus.remote_write.remote_prometheus.receiver]
+}
