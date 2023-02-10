@@ -28,25 +28,25 @@ logging {
   write_to = [loki.write.remote_loki.receiver]
 }
 
-prometheus.exporter.self "{{ alloy_hostname }}" {}
-prometheus.scrape "{{ alloy_hostname }}" {
-  targets    = prometheus.exporter.self.{{ alloy_hostname }}.targets
+prometheus.exporter.self "alloy" {}
+prometheus.scrape "alloy" {
+  targets    = prometheus.exporter.self.alloy.targets
   forward_to = [prometheus.remote_write.remote_prometheus.receiver]
 }
 
 
-prometheus.exporter.unix "{{ alloy_hostname }}" { }
-prometheus.scrape "{{ alloy_hostname }}" {
-  targets    = prometheus.exporter.unix.{{ alloy_hostname }}.targets
+prometheus.exporter.unix "node" { }
+prometheus.scrape "node" {
+  targets    = prometheus.exporter.unix.node.targets
   forward_to = [prometheus.remote_write.remote_prometheus.receiver]
 }
 
-prometheus.scrape "docker_metrics" {
+prometheus.scrape "docker" {
   targets = [
     {
       __address__ = "127.0.0.1:9323",
-      __metrics_path__ = "/metrics"
-    }
+      __metrics_path__ = "/metrics",
+    },
   ]
   forward_to = [prometheus.remote_write.remote_prometheus.receiver]
 }

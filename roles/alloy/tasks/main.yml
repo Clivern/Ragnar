@@ -58,6 +58,8 @@
     src: config.alloy.j2
     dest: /opt/alloy/config.alloy
     mode: '0644'
+  notify:
+    - restart alloy
   tags: [ ragnar, alloy ]
 
 - name: Change ownership of Alloy directories
@@ -75,6 +77,8 @@
   template:
     src: alloy.service.j2
     dest: /etc/systemd/system/alloy.service
+  notify:
+    - restart alloy
   tags: [ ragnar, alloy ]
 
 - name: Reload systemd to recognize the new service
